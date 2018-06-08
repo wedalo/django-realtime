@@ -30,7 +30,7 @@ def ishout_js():
     SSL, be sure to set `ISHOUT_HTTPS` to True.
     """
     path = _determine_base_path()
-    return """
+    return str("""
     <script type="text/javascript" src="%s/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="%s/client/ishout.client.js"></script>
-    """ % (path, path)
+    """ % (path, path)).encode("utf-8")
