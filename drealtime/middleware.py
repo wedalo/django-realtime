@@ -24,8 +24,8 @@ class iShoutCookieMiddleware(object):
             res = ishout_client.get_token(request.user.pk)
         elif self.anonymous_id:
             print("getTokenAnnonymousUser")
-            # res = ishout_client.get_token(self.anonymous_id)
-            res = ishout_client.get_token('5000')
+            res = ishout_client.get_token(self.anonymous_id)
+            # res = ishout_client.get_token('5000')
         return res
 
     def has_ishout_cookie(self, request):
