@@ -22,6 +22,7 @@ class iShoutClient(object):
     """
     def __init__(self):
         self.base_url = getattr(settings, 'ISHOUT_API_ADDR', 'localhost:6600')
+        self.session_anonymous_item_id = getattr(settings, 'ISHOUT_ANONYMOUS_SESSION_ITEM_ID', None)
 
     def _do_request(self, method, path, *args, **kwargs):
         # A generic wrapper around httplib.

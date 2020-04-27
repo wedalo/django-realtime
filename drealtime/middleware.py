@@ -13,12 +13,18 @@ class iShoutCookieMiddleware(object):
     
     Put this before `AuthenticationMiddleware`.
     """
+    anonymous_id = None
+
     def get_token(self, request):
         """
         use the HTTP client to get a token from the iShout.js server,
         for the currently logged in user.
         """
-        res = ishout_client.get_token(request.user.pk)
+        if request.user.is_authenticated():
+            res = ishout_client.get_token(request.user.pk)
+        elif self.anonymous_id:
+            print("getTokenAnnonymousUser")
+            res = ishout_client.get_token(self.anonymous_id)
         return res
 
     def has_ishout_cookie(self, request):
@@ -61,6 +67,23 @@ class iShoutCookieMiddleware(object):
         )
         return response
 
+    def has_valid_anonymous_session(self,request):
+        if not ishout_client.session_anonymous_item_id:
+            print "no setting var"
+            return False
+
+        print("has_valid_anonymous_session",request.session.session_key)
+        if not request.session.session_key:
+            return False
+
+        #Validate it has the member key
+        self.anonymous_id = request.session.get(ishout_client.session_anonymous_item_id,False)
+        if not request.session.get(ishout_client.session_anonymous_item_id,False):
+            return False
+
+        print("UUID", self.anonymous_id)
+        return True
+
     def process_response(self, request, response):
         # We only use it for authenticated users
         if not hasattr(request, 'user'):
@@ -79,7 +102,8 @@ class iShoutCookieMiddleware(object):
             return response
         
         # skip unauthenticated users
-        if not request.user.is_authenticated():
+        self.anonymous_id = None
+        if not request.user.is_authenticated() and not self.has_valid_anonymous_session(request):
             return response
 
         # Check if we have the cookie already set:
