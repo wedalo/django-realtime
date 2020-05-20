@@ -1,6 +1,7 @@
 import datetime
 from django.conf import settings
 from drealtime import iShoutClient
+from past.builtins import basestring    # pip install future
 
 ishout_client = iShoutClient()
 ishout_cookie_name = 'ishoutToken'
@@ -87,6 +88,10 @@ class iShoutCookieMiddleware(object):
     def process_response(self, request, response):
         # We only use it for authenticated users
         if not hasattr(request, 'user'):
+            return response
+
+        # Solve issue with custom DRF authentication methods
+        if isinstance(request.user,basestring):
             return response
             
         if not request.user.is_authenticated() and \
