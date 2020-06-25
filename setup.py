@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-realtime',
-    version='1.1',
+    version='1.2',
     author='Anish menon',
     author_email='anish@inzane.in',
     description='an iShout.js client for Django',
-    url='https://bitbucket.org/inzane/django-realtime',
+    url='https://github.com/wedalo/django-realtime',
     license='MIT',
     packages=find_packages(),
     classifiers = [
