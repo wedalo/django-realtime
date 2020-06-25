@@ -47,7 +47,8 @@ class iShoutClient(object):
         if not response or response.status > 399:
             return None
         try:
-            resp = json.loads(response.read())
+            respread = response.read().decode("utf-8") if isinstance(response.read(),bytes) else response.read()
+            resp = json.loads(respread)
         except ValueError:
             return None
         if resp:
@@ -126,7 +127,7 @@ class iShoutClient(object):
         """
         path = '/status/room/%s' % (channel)
         response = self._do_request('GET', path)
-        data = response.read()
+        data = response.read().decode("utf-8") if isinstance(response.read(),bytes) else response.read()
         try:
             return json.loads(data)
         except ValueError:
