@@ -1,21 +1,17 @@
+try:
+    # Python 2
+    import httplib
+except ImportError:
+    # Python 3
+    import http.client as httplib
 import socket
 from django.conf import settings
-
-try:
-    import httplib
-except:
-    import http.client as  httplib
-
 try:
     from django.utils import simplejson as json
-
 except ImportError:
-    import simplejson as json
-    
-except:
     import json
-    
-__version__ = '0.1.5'
+
+__version__ = '0.1.6'
 VERSION = map(int, __version__.split('.'))
 
 class iShoutClient(object):
@@ -26,6 +22,7 @@ class iShoutClient(object):
     """
     def __init__(self):
         self.base_url = getattr(settings, 'ISHOUT_API_ADDR', 'localhost:6600')
+        self.session_anonymous_item_id = getattr(settings, 'ISHOUT_ANONYMOUS_SESSION_ITEM_ID', None)
 
     def _do_request(self, method, path, *args, **kwargs):
         # A generic wrapper around httplib.

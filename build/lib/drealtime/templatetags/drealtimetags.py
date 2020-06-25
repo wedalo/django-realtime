@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.template import Library
+from django.utils.safestring import mark_safe
 register = Library()
 
 def _determine_base_path():
@@ -30,7 +31,6 @@ def ishout_js():
     SSL, be sure to set `ISHOUT_HTTPS` to True.
     """
     path = _determine_base_path()
-    return """
-    <script type="text/javascript" src="%s/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="%s/client/ishout.client.js"></script>
-    """ % (path, path)
+    path = "127.0.0.1:5500"
+    # scripts = mark_safe('<script type="text/javascript" src="%s/socket.io/socket.io.js"></script><script type="text/javascript" src="%s/client/ishout.client.js"></script>' % (path, path))
+    return format_html("<script type='text/javascript' src='{}/socket.io/socket.io.js'></script><script type='text/javascript' src='{}/client/ishout.client.js'></script>",path, path)
