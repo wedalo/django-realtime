@@ -31,8 +31,5 @@ def ishout_js():
     SSL, be sure to set `ISHOUT_HTTPS` to True.
     """
     path = _determine_base_path()
-    scripts = mark_safe("""
-    <script type="text/javascript" src="%s/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="%s/client/ishout.client.js"></script>
-    """ % (path, path))
+    scripts = mark_safe('<script type="text/javascript" src="%s/socket.io/socket.io.js"></script><script type="text/javascript" src="%s/client/ishout.client.js"></script>' % (path, path))
     return format_html("{}",scripts)
