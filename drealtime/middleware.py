@@ -33,6 +33,8 @@ class iShoutCookieMiddleware(object):
 
     def has_ishout_cookie(self, request):
         cookie = request.COOKIES.get(ishout_cookie_name)
+        print("iShoutCookieMiddleware COOKIE",type(cookie))
+        print("iShoutCookieMiddleware COOKIE",cookie)
         if cookie:
             return True
         return False
