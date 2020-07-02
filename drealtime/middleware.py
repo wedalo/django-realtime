@@ -20,11 +20,15 @@ class iShoutCookieMiddleware(object):
         use the HTTP client to get a token from the iShout.js server,
         for the currently logged in user.
         """
+        print("iShoutCookieMiddleware>> get_token")
         if request.user.is_authenticated():
+            print("iShoutCookieMiddleware>> is_authenticated")
             res = ishout_client.get_token(request.user.pk)
         elif self.anonymous_id:
+            print("iShoutCookieMiddleware>> is_anonymous")
             res = ishout_client.get_token(self.anonymous_id)
             # res = ishout_client.get_token('5000')
+        print("iShoutCookieMiddleware>> RES: ",res)
         return res
 
     def has_ishout_cookie(self, request):
@@ -72,7 +76,7 @@ class iShoutCookieMiddleware(object):
             # print "no setting var"
             return False
 
-        # print("has_valid_anonymous_session",request.session.session_key)
+        print("has_valid_anonymous_session",request.session.session_key)
         if not request.session.session_key:
             return False
 
@@ -94,6 +98,7 @@ class iShoutCookieMiddleware(object):
             # If there is no authenticated user attached to this request,
             # but the ishout.js token cookie is still present, delete it.
             # This is usually called on logout.
+            print("101")
             path = self.determine_path(request)
             domain = self.determine_domain(request)
             response.delete_cookie(
@@ -104,12 +109,15 @@ class iShoutCookieMiddleware(object):
         # skip unauthenticated users
         self.anonymous_id = None
         if not request.user.is_authenticated() and not self.has_valid_anonymous_session(request):
+            print("112")
             return response
 
         # Check if we have the cookie already set:
         if self.has_ishout_cookie(request):
+            print("117")            
             return response
 
         # If not, set it.
         self.set_ishout_cookie(request, response)
+        print("122") 
         return response
