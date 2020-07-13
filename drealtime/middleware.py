@@ -26,6 +26,7 @@ class iShoutCookieMiddleware(object):
         elif self.anonymous_id:
             res = ishout_client.get_token(self.anonymous_id)
             # res = ishout_client.get_token('5000')
+        print("get_token",res)
         return res
 
     def has_ishout_cookie(self, request):
@@ -70,10 +71,10 @@ class iShoutCookieMiddleware(object):
 
     def has_valid_anonymous_session(self,request):
         if not ishout_client.session_anonymous_item_id:
-            # print "no setting var"
+            print ("no setting var")
             return False
 
-        # print("has_valid_anonymous_session",request.session.session_key)
+        print("has_valid_anonymous_session",request.session.session_key)
         if not request.session.session_key:
             return False
 
@@ -82,7 +83,7 @@ class iShoutCookieMiddleware(object):
         if not request.session.get(ishout_client.session_anonymous_item_id,False):
             return False
 
-        # print("UUID", self.anonymous_id)
+        print("UUID", self.anonymous_id)
         return True
 
     def process_response(self, request, response):
