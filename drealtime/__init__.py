@@ -56,7 +56,7 @@ class iShoutClient(object):
             resp = json.loads(respread)
         # except ValueError:
         except Exception as err:
-            print err
+            print (err)
             return None
         if resp:
             if 'token' in resp:
