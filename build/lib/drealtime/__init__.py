@@ -50,9 +50,13 @@ class iShoutClient(object):
         if not response or response.status > 399:
             return None
         try:
+            print("READ")
+            print(response.read(),type(response.read()))
             respread = response.read().decode("utf-8") if isinstance(response.read(),bytes) else response.read()
             resp = json.loads(respread)
-        except ValueError:
+        # except ValueError:
+        except Exception as err:
+            print err
             return None
         if resp:
             if 'token' in resp:
