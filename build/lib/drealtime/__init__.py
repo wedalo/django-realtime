@@ -44,6 +44,9 @@ class iShoutClient(object):
         """
         path = '/auth/token/%s' % (user_id)
         response = self._do_request('POST', path)
+        print(response)
+        if response:
+            print(response.status)
         if not response or response.status > 399:
             return None
         try:
