@@ -53,7 +53,10 @@ class iShoutClient(object):
             print("READ")
             print(response.read(),type(response.read()))
             respread = response.read().decode("utf-8") if isinstance(response.read(),bytes) else response.read()
+            print("RESPONSE: ",respread, " TYPE", type(respread))
+            print(respread)
             resp = json.loads(respread)
+            print("RES LOADS", resp)
         # except ValueError:
         except Exception as err:
             print (err)
