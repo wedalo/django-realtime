@@ -21,9 +21,12 @@ class iShoutCookieMiddleware(object):
         use the HTTP client to get a token from the iShout.js server,
         for the currently logged in user.
         """
+        print("====ishout GET TOKEN MIDDLEWARE")
         if request.user.is_authenticated():
+            print("====ishout GET TOKEN is_authenticated")
             res = ishout_client.get_token(request.user.pk)
         elif self.anonymous_id:
+            print("====ishout GET TOKEN is_anonymous")
             res = ishout_client.get_token(self.anonymous_id)
             # res = ishout_client.get_token('5000')
         return res
@@ -43,6 +46,7 @@ class iShoutCookieMiddleware(object):
         return settings.SESSION_COOKIE_DOMAIN
 
     def set_ishout_cookie(self, request, response):
+        print("====ishout set_ishout_cookie")
         cookie_path = self.determine_path(request)
         cookie_domain = self.determine_domain(request)
         ishout_cookie_value = self.get_token(request)

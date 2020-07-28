@@ -42,12 +42,17 @@ class iShoutClient(object):
         A primary key from the users table is a good fit, but so is
         a session ID, as long as it is unique.
         """
+        print("====ishout GET TOKEN")
         path = '/auth/token/%s' % (user_id)
         response = self._do_request('POST', path)
+        print("====ishout response",response)
         if not response or response.status > 399:
+            if response:
+                print("====ishout response.status", response.status)
             return None
         try:
             data = response.read()
+            print("====ishout response read", data)
             respread = data.decode("utf-8") if isinstance(data,bytes) else data
             resp = json.loads(respread)
         except ValueError:
