@@ -3,10 +3,12 @@ from django.conf import settings
 from drealtime import iShoutClient
 from past.builtins import basestring    # pip install future
 
+from django.utils.deprecation import MiddlewareMixin
+
 ishout_client = iShoutClient()
 ishout_cookie_name = 'ishoutToken'
 
-class iShoutCookieMiddleware(object):
+class iShoutCookieMiddleware(MiddlewareMixin):
     """
     call the iShout.js API interface and get a token
     for the currently logged-in user.
