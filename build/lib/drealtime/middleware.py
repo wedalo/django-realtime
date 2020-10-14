@@ -3,10 +3,12 @@ from django.conf import settings
 from drealtime import iShoutClient
 from past.builtins import basestring    # pip install future
 
+from django.utils.deprecation import MiddlewareMixin
+
 ishout_client = iShoutClient()
 ishout_cookie_name = 'ishoutToken'
 
-class iShoutCookieMiddleware(object):
+class iShoutCookieMiddleware(MiddlewareMixin):
     """
     call the iShout.js API interface and get a token
     for the currently logged-in user.
@@ -21,7 +23,7 @@ class iShoutCookieMiddleware(object):
         use the HTTP client to get a token from the iShout.js server,
         for the currently logged in user.
         """
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             res = ishout_client.get_token(request.user.pk)
         elif self.anonymous_id:
             res = ishout_client.get_token(self.anonymous_id)
@@ -94,7 +96,7 @@ class iShoutCookieMiddleware(object):
         if isinstance(request.user,basestring):
             return response
             
-        if not request.user.is_authenticated() and \
+        if not request.user.is_authenticated and \
         ishout_cookie_name in request.COOKIES:
             # If there is no authenticated user attached to this request,
             # but the ishout.js token cookie is still present, delete it.
@@ -108,7 +110,7 @@ class iShoutCookieMiddleware(object):
         
         # skip unauthenticated users
         self.anonymous_id = None
-        if not request.user.is_authenticated() and not self.has_valid_anonymous_session(request):
+        if not request.user.is_authenticated and not self.has_valid_anonymous_session(request):
             return response
 
         # Check if we have the cookie already set:
