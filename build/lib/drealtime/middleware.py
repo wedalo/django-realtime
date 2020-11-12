@@ -24,7 +24,8 @@ class iShoutCookieMiddleware(MiddlewareMixin):
         for the currently logged in user.
         """
         if request.user.is_authenticated:
-            res = ishout_client.get_token(request.user.pk)
+            # res = ishout_client.get_token(request.user.pk)
+            res = ishout_client.get_token(request.session.session_key)
         elif self.anonymous_id:
             res = ishout_client.get_token(self.anonymous_id)
             # res = ishout_client.get_token('5000')
